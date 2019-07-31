@@ -74,11 +74,12 @@ def readFileListOfLines (fileName,_linesTotalSec):
 	
 	colResult=re.search('color:#(.*);font-weight',value).group(1)
 	for index,spa in enumerate(span):
-	    
+	   # iterates through dictoionary of bs4 span values
 	    for key, value in spa.attrs.items():
 	        if "underline" in value:
 	            colResult=re.search('color:#(.*);font-weight',value).group(1)
-	            _linesTotalSec.append( Line(descrId,"DESCRIPTION",spa.text,colResult,lineNumberSec,_TPrev,_tT))
+	            tex=spa.text.replace("(","").replace(")","")
+	            _linesTotalSec.append( Line(descrId,"DESCRIPTION",tex,colResult,lineNumberSec,_TPrev,_tT))
 	            lineNumberSec=lineNumberSec+1
 	        elif "italic" in value:
 	        	for actind ,act in enumerate(actors):
@@ -113,12 +114,16 @@ def selectionAct(_linesTotalSec,_actors):
 		print("move typeof the actor 0-9")
 		print( "from idle to agressive")
 		movType=input()
+		#distance between actors
+		print("distance between actor 0-9")
+		distType=input()
 	
 		#this is when you start typing
 		_linesTotalSec[index].idSc.clear()
 		_linesTotalSec[index].idSc.append(actTo)
 		_linesTotalSec[index].idSc.append(item)
 		_linesTotalSec[index].idSc.append(movType)
+		_linesTotalSec[index].idSc.append(distType)
 		print(_linesTotalSec[index].tex)
 		print(_linesTotalSec[index].idSc)
 		print ("proceed? or repeat ->r" )
