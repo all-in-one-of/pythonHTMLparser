@@ -78,7 +78,7 @@ def readFileListOfLines (fileName,_linesTotalSec):
 	    for key, value in spa.attrs.items():
 	        if "underline" in value:
 	            colResult=re.search('color:#(.*);font-weight',value).group(1)
-	            tex=spa.text.replace("(","").replace(")","")
+	            tex=spa.text.replace("(","").replace(")","").encode("utf8")
 	            _linesTotalSec.append( Line(descrId,"DESCRIPTION",tex,colResult,lineNumberSec,_TPrev,_tT))
 	            lineNumberSec=lineNumberSec+1
 	        elif "italic" in value:
@@ -189,8 +189,6 @@ def writeToCsvExt(fileCsvExt,_linesTotalSec):
 	with open("output.csv","r") as file_obj:	
 		reader = csv.reader(file_obj, delimiter=',')
 		myScriptList=list(reader)
-		#will print first element in csv line list as string
-		for line in myScriptList:
-			print(line[0])
+		
 if __name__ == "__main__":
     print ("executed as main")
