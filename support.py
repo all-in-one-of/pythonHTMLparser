@@ -30,8 +30,11 @@ class Char():
 		#list of lines for this character (class Line)
 		self.lines=[]
 
-
-
+def objCreator(d):
+	line=Line(d["charId"],d["name"],d["tex"],d["act"],d["lineNum"],d['timing'],d['tT'])
+	line.idSc=d['idSc']
+	return line
+		
 
 
 
@@ -78,7 +81,7 @@ def readFileListOfLines (fileName,_linesTotalSec):
 	    for key, value in spa.attrs.items():
 	        if "underline" in value:
 	            colResult=re.search('color:#(.*);font-weight',value).group(1)
-	            tex=spa.text.replace("(","").replace(")","").encode("utf8")
+	            tex=spa.text.replace("(","").replace(")","")
 	            _linesTotalSec.append( Line(descrId,"DESCRIPTION",tex,colResult,lineNumberSec,_TPrev,_tT))
 	            lineNumberSec=lineNumberSec+1
 	        elif "italic" in value:

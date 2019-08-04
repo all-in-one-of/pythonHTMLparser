@@ -11,7 +11,7 @@ import os
 import bs4
 from bs4 import BeautifulSoup
 import csv
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill
+from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator
 
 
 
@@ -41,22 +41,31 @@ actors=actorsListFill(actors,linesTotalSec)
 
 # convert list of objects to dictionary
 Lf={}
-for i in range(0,len(linesTotalSec)):
-	Ld={}
-	item=linesTotalSec[i]
-	Ld["charId"]=item.charId
-	Ld["name"]=item.name
-	Ld["tex"]=item.tex
-	Ld["act"]=item.act
-	Ld["idSc"]=item.idSc
-	Ld["lineNum"]=item.lineNum
-	Ld["timing"]=item.timing
-	Ld["tT"]=item.tT
-	Lf[i]=Ld
-	print(Lf[i])
+with open('output.jsonl', 'w') as outfile:
+	for i in range(0,len(linesTotalSec)):
+		Ld={}
+		item=linesTotalSec[i]
+		Ld["charId"]=item.charId
+		Ld["name"]=item.name
+		Ld["tex"]=item.tex
+		Ld["act"]=item.act
+		Ld["idSc"]=item.idSc
+		Ld["lineNum"]=item.lineNum
+		Ld["timing"]=item.timing
+		Ld["tT"]=item.tT
+		json.dump(Ld, outfile)
+		outfile.write('\n')
 
-#writes csv to disk linestotalSec
 writeToCsvExt("output.csv",linesTotalSec)
+
+
+	
+data = []
+with open('output.jsonl') as f:
+	obj=(json.load(f,object_hook=objCreator))
+	data.append(obj)
+	
+
 '''
 with open('data.json') as json_file:
     data = json.load(json_file)
