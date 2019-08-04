@@ -31,7 +31,7 @@ class Char():
 		self.lines=[]
 
 def objCreator(d):
-	line=Line(d["charId"],d["name"],d["tex"],d["act"],d["lineNum"],d['timing'],d['tT'])
+	line=Line(d["charId"],d["name"],d["tex"],d["act"],d["lineNum"],d["timing"],d["tT"])
 	line.idSc=d['idSc']
 	return line
 		

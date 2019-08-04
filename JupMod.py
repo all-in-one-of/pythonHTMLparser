@@ -61,10 +61,17 @@ writeToCsvExt("output.csv",linesTotalSec)
 
 	
 data = []
+print("DTJSon")
 with open('output.jsonl') as f:
-	obj=(json.load(f,object_hook=objCreator))
-	data.append(obj)
-	
+	for line in f:
+		obj=(json.loads(line,object_hook=objCreator))
+		print("DTJSon")
+		print(obj)
+		data.append(obj)
+print(data[5].tex)
+print(data[1].idSc)
+print(data[5].tT)
+
 
 '''
 with open('data.json') as json_file:
