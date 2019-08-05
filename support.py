@@ -81,15 +81,18 @@ def readFileListOfLines (fileName,_linesTotalSec):
 	    for key, value in spa.attrs.items():
 	        if "underline" in value:
 	            colResult=re.search('color:#(.*);font-weight',value).group(1)
+	            colRGB=tuple(int(colResult[i:i+2], 16) for i in (0, 2, 4))
 	            tex=spa.text.replace("(","").replace(")","")
-	            _linesTotalSec.append( Line(descrId,"DESCRIPTION",tex,colResult,lineNumberSec,_TPrev,_tT))
+	            _linesTotalSec.append( Line(descrId,"DESCRIPTION",tex,colRGB,lineNumberSec,_TPrev,_tT))
 	            lineNumberSec=lineNumberSec+1
 	        elif "italic" in value:
 	        	for actind ,act in enumerate(actors):
 	        		if span[index-1].text.upper().startswith(act.name.upper()):
 	        			colResult=re.search('color:#(.*);font-weight',value).group(1)
+	        			colRGB=tuple(int(colResult[i:i+2], 16) for i in (0, 2, 4))
 	        			
-	        			_linesTotalSec.append( Line(actind,act.name,spa.text,colResult,lineNumberSec,_TPrev,_tT))
+	        			
+	        			_linesTotalSec.append( Line(actind,act.name,spa.text,colRGB,lineNumberSec,_TPrev,_tT))
 	        			lineNumberSec=lineNumberSec+1
 	textFile.close()    			
 	return _linesTotalSec,actors
@@ -123,10 +126,10 @@ def selectionAct(_linesTotalSec,_actors):
 	
 		#this is when you start typing
 		_linesTotalSec[index].idSc.clear()
-		_linesTotalSec[index].idSc.append(actTo)
-		_linesTotalSec[index].idSc.append(item)
-		_linesTotalSec[index].idSc.append(movType)
-		_linesTotalSec[index].idSc.append(distType)
+		_linesTotalSec[index].idSc.append(int(actTo))
+		_linesTotalSec[index].idSc.append(int(item))
+		_linesTotalSec[index].idSc.append(int(movType))
+		_linesTotalSec[index].idSc.append(int(distType))
 		print(_linesTotalSec[index].tex)
 		print(_linesTotalSec[index].idSc)
 		print ("proceed? or repeat ->r" )
