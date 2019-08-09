@@ -15,4 +15,4 @@ with open('output.jsonl') as f:
 
 for itemT in data:
 	tts = gTTS(text=itemT.tex, lang='en')
-	tts.save("charId"+str(itemT.charId)+"lineNum"+str(itemT.lineNum)+"mp3")
+	tts.save("charId"+str(itemT.charId)+"lineNum"+str(itemT.lineNum)+".mp3")
