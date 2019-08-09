@@ -40,7 +40,7 @@ linesTotalSec=selectionAct(linesTotalSec,actors)
 actors=actorsListFill(actors,linesTotalSec)
 
 # convert list of objects to dictionary
-Lf={}
+
 with open('output.jsonl', 'w') as outfile:
 	for i in range(0,len(linesTotalSec)):
 		Ld={}

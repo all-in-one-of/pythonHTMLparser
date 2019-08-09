@@ -24,13 +24,10 @@ with open('output.jsonl') as f:
 		data.append(obj)
 		
 for item in data:
-	if item.charId==0:
-		sound='/storage/emulated/0/Download/Python/DatasetPy/audio.mp3'
+	filename="charId"+str(item.charId)+"lineNum"+str(item.lineNum)+".mp3"
+	if item.charId>=0:
+		sound='/storage/emulated/0/Download/skazka/'+filename
 		playsound(sound)
 		time.sleep(item.timing)
-	elif item.charId==1:
-		sound="/storage/emulated/0/Download/skazka/good.mp3"
-		playsound(sound)
-		time.sleep(item.timing)
-		
+	
 	
