@@ -1,4 +1,6 @@
 #todo TTS convert
+#todo write jsonl file with addresses of sound files
+#write sound files to diff directories
 import json
 import io
 import pygame
