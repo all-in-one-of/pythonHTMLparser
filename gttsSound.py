@@ -12,7 +12,11 @@ with open('output.jsonl') as f:
 		print("DTJSon")
 		print(obj)
 		data.append(obj)
-
+workDir=os.getcwd()
+directory=workDir+"/sound"
+if not os.path.exists(directory):
+    os.makedirs(directory)
 for itemT in data:
-	tts = gTTS(text=itemT.tex, lang='en')
-	tts.save("charId"+str(itemT.charId)+"lineNum"+str(itemT.lineNum)+".mp3")
+	tts = gTTS(text=itemT.tex, lang='ru')
+	mp3name="charId"+str(itemT.charId)+"lineNum"+str(itemT.lineNum)
+	tts.save("%s.mp3" % os.path.join(directory,mp3name))
