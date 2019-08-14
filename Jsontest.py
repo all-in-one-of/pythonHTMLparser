@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 import csv
 from getBusy import playsound
 
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator
+from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
 
 #data must be the same as linesTotalSec
 data = []
