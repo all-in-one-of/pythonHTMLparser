@@ -2,6 +2,7 @@ import time
 from  bs4 import BeautifulSoup
 import re
 import csv
+import json
 
 
 
@@ -17,6 +18,7 @@ class Line():
 		self.lineNum=lineNum
 		self.timing=timing
 		self.tT=tT
+		self.soundFile=""
 
 
 
@@ -32,6 +34,7 @@ class Char():
 
 def objCreator(d):
 	line=Line(d["charId"],d["name"],d["tex"],d["act"],d["lineNum"],d["timing"],d["tT"])
+	line.soundFile=d["soundFile"]
 	line.idSc=d['idSc']
 	return line
 		
@@ -176,6 +179,25 @@ def actorsListFill(_actors,_linesTotalSec):
 				#char.lines.clear()
 				char.lines.append(items)
 	return _actors
+
+# convert list of objects to dictionary
+#and writes to JsonL file
+def writeToJsonL(filename,listOfObj):
+	with open(filename, 'w') as outfile:
+		for i in range(0,len(listOfObj)):
+			Ld={}
+			item=listOfObj[i]
+			Ld["charId"]=item.charId
+			Ld["name"]=item.name
+			Ld["tex"]=item.tex
+			Ld["act"]=item.act
+			Ld["idSc"]=item.idSc
+			Ld["lineNum"]=item.lineNum
+			Ld["timing"]=item.timing
+			Ld["tT"]=item.tT
+			Ld["soundFile"]=item.soundFile
+			json.dump(Ld, outfile)
+			outfile.write('\n')
 
 def writeToCsvExt(fileCsvExt,_linesTotalSec):
 	with open(fileCsvExt,'w') as outputFile:

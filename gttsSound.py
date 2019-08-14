@@ -1,7 +1,7 @@
 from gtts import gTTS
 import os
 import json
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator
+from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
 
 
 data = []
@@ -20,3 +20,5 @@ for itemT in data:
 	tts = gTTS(text=itemT.tex, lang='ru')
 	mp3name="charId"+str(itemT.charId)+"lineNum"+str(itemT.lineNum)
 	tts.save("%s.mp3" % os.path.join(directory,mp3name))
+	itemT.soundPath=("%s.mp3" % os.path.join(directory,mp3name))
+writeToJsonL("outputSdPath.jsonl",data)

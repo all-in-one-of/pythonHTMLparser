@@ -11,7 +11,7 @@ import os
 import bs4
 from bs4 import BeautifulSoup
 import csv
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator
+from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
 
 
 
@@ -39,23 +39,8 @@ linesTotalSec=selectionAct(linesTotalSec,actors)
 #fills actors lis with text lines
 actors=actorsListFill(actors,linesTotalSec)
 
-# convert list of objects to dictionary
 
-with open('output.jsonl', 'w') as outfile:
-	for i in range(0,len(linesTotalSec)):
-		Ld={}
-		item=linesTotalSec[i]
-		Ld["charId"]=item.charId
-		Ld["name"]=item.name
-		Ld["tex"]=item.tex
-		Ld["act"]=item.act
-		Ld["idSc"]=item.idSc
-		Ld["lineNum"]=item.lineNum
-		Ld["timing"]=item.timing
-		Ld["tT"]=item.tT
-		json.dump(Ld, outfile)
-		outfile.write('\n')
-
+writeToJsonL('output.jsonl',linesTotalSec)
 writeToCsvExt("output.csv",linesTotalSec)
 
 
