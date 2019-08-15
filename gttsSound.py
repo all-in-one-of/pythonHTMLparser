@@ -5,6 +5,8 @@ from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,ac
 
 
 data = []
+#path to sound files
+pathStr=[]
 print("DTJSon")
 with open('output.jsonl') as f:
 	for line in f:
@@ -20,5 +22,11 @@ for itemT in data:
 	tts = gTTS(text=itemT.tex, lang='ru')
 	mp3name="charId"+str(itemT.charId)+"lineNum"+str(itemT.lineNum)
 	tts.save("%s.mp3" % os.path.join(directory,mp3name))
-	itemT.soundPath=("%s.mp3" % os.path.join(directory,mp3name))
+	pathStr.append("%s.mp3" % os.path.join(directory,mp3name))
+#assingning sound address strings to list of object
+for i in range(len(data)):
+	data[i].soundFile=pathStr[i]
+	i+=1
+	
+#Todo not assigned path
 writeToJsonL("outputSdPath.jsonl",data)
