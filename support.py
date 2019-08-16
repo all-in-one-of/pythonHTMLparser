@@ -43,6 +43,13 @@ def objCreator(d):
 
 def readFileListOfLines (fileName,_linesTotalSec):
 	#temp values to fill the class variables
+	#reads html file. the underlined strings are descriptions of the story
+	#the italic strings are the dialogs
+	#reads the color value of the string and creates an RGB tuple
+	# red text defines an actors list
+	# if text is italic list of actors is compared to prev span beginning and
+	#adds an actor id. all this is forming list of objects.  _linesTotalSec
+	
 	_TPrev=2
 	_tT=0
 	textFile=open(fileName)
@@ -107,6 +114,10 @@ def readFileListOfLines (fileName,_linesTotalSec):
 					
 def selectionAct(_linesTotalSec,_actors):
 		#input for actions into idSc string
+		#that makes a list of descriptions for the dialog
+		# may need to implement some conditions and submenues
+		#currently is:id of listener,id of item speaker has,
+		#movement loop id,distance to the listener
 	r=""
 	index=0
 	while r !="q" and  (index+1)<len(_linesTotalSec):
