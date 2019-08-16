@@ -1,4 +1,4 @@
-
+#Plays sound library .waits till the sound file ends 30 times per second #checks pygame.mixer.get_busy variable
 import pygame
 import sys
 
@@ -20,10 +20,6 @@ def playsound(soundfile):
         clock.tick(FR)
     pygame.QUIT
 
-#sound='/storage/emulated/0/Download/Python/DatasetPy/audio.mp3'
-#playsound(sound)
-#print ("$$$$")
-#playsound(sound)
 if __name__ == '__main__':
 	sound='/storage/emulated/0/Download/Python/DatasetPy/audio.mp3'
 	playsound(sound)

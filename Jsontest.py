@@ -1,16 +1,9 @@
-#todo TTS convert
-#todo write jsonl file with addresses of sound files
-#write sound files to diff directories
+#Plays sounds from JsonL file for testing
+
 import json
-import io
 import pygame
-import re
 import time
-import unicodedata
 import os
-import bs4
-from bs4 import BeautifulSoup
-import csv
 from getBusy import playsound
 
 from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
@@ -18,7 +11,7 @@ from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,ac
 #data must be the same as linesTotalSec
 data = []
 print("DTJSon")
-with open('output.jsonl') as f:
+with open("outputSdPath.jsonl") as f:
 	for line in f:
 		obj=(json.loads(line,object_hook=objCreator))
 		print("DTJSon")
@@ -26,9 +19,7 @@ with open('output.jsonl') as f:
 		data.append(obj)
 		
 for item in data:
-	filename="charId"+str(item.charId)+"lineNum"+str(item.lineNum)+".mp3"
-	if item.charId>=0:
-		sound='/storage/emulated/0/Download/skazka/'+filename
+		sound=item.soundFile
 		playsound(sound)
 		time.sleep(item.timing)
 	

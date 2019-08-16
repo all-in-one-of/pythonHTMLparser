@@ -1,7 +1,5 @@
 #pylint:disable=E0602
-# ToDo read csv file in a timing manner and print corresponding actions 
-# add distance to the actions , why description and rasskazxhik is not 
-#strings
+# 
 import json
 import io
 import re
@@ -57,11 +55,4 @@ print(data[5].tex)
 print(data[1].idSc)
 print(data[5].tT)
 
-
-'''
-with open('data.json') as json_file:
-    data = json.load(json_file)
-    for p in data:
-        print(p.idSc)
-'''
 		
