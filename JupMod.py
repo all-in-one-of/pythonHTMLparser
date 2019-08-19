@@ -1,5 +1,4 @@
-#pylint:disable=E0602
-# 
+#To do  import Jsonl into Houdini and create geo with animation and sound
 import json
 import io
 import re
