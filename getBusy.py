@@ -1,4 +1,5 @@
 #Plays sound library .waits till the sound file ends 30 times per second #checks pygame.mixer.get_busy variable
+# closes terminal output for pygame session
 import pygame
 import sys
 
