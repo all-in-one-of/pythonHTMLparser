@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #To do  import Jsonl into Houdini and create geo with animation and sound
 import json
 import io
@@ -8,7 +9,7 @@ import os
 import bs4
 from bs4 import BeautifulSoup
 import csv
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
+from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL,generateListActId
 
 
 
@@ -18,8 +19,13 @@ EmoList=[":)",";)",":}",":|",":(",":[",":()",":[]",";>()",":>[]"]
 #text color is read into list
 linesTotalSec=[]
 linesTotalSec,actors=readFileListOfLines("index.html",linesTotalSec)
-
-#prints resulted list
+for actor in actors:
+    print (actor)
+listTest=generateListActId(linesTotalSec)
+print(listTest)
+        
+    
+    #prints resulted list
 for lineSec in linesTotalSec:
 	print(lineSec.tex+"lineActor"+ actors[lineSec.charId].name)
 

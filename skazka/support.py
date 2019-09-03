@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import time
 from  bs4 import BeautifulSoup
 import re
@@ -37,8 +38,15 @@ def objCreator(d):
 	line.soundFile=d["soundFile"]
 	line.idSc=d['idSc']
 	return line
-		
 
+#generates list of actors id from globla list linesTotalSec
+def generateListActId(_linesTotalSec):
+    listOfId=[]
+    for item in _linesTotalSec:
+        if item.charId not in listOfId:
+            listOfId.append(item.charId)
+    listOfId.sort()
+    return listOfId
 
 
 def readFileListOfLines (fileName,_linesTotalSec):
@@ -52,7 +60,7 @@ def readFileListOfLines (fileName,_linesTotalSec):
 	
 	_TPrev=2
 	_tT=0
-	textFile=open(fileName)
+	textFile=open(fileName, encoding="utf8")
 	text1=textFile.read()
 	soup1 = BeautifulSoup(text1,"html.parser")
 	

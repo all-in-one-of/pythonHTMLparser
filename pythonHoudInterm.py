@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import os
 from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
