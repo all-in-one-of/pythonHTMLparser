@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #To do  import Jsonl into Houdini and create geo with animation and sound
 import json
 import io
@@ -9,45 +8,31 @@ import os
 import bs4
 from bs4 import BeautifulSoup
 import csv
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL,generateListActId
-
-
-
-EmoList=[":)",";)",":}",":|",":(",":[",":()",":[]",";>()",":>[]"]	
+from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL,writeToText,textToTotalLines
 
 #reads formatted html page separate names, description is underlined
 #text color is read into list
 linesTotalSec=[]
 linesTotalSec,actors=readFileListOfLines("index.html",linesTotalSec)
-for actor in actors:
-    print (actor)
-listTest=generateListActId(linesTotalSec)
-print(listTest)
-        
-    
-    #prints resulted list
+
+#prints resulted list
 for lineSec in linesTotalSec:
 	print(lineSec.tex+"lineActor"+ actors[lineSec.charId].name)
 
-# set the timing for each line
+# set the timing for each line from number of char
 tT=0
 linesTotalSec=timingLine(linesTotalSec,tT)
 
 
-#input for actions into idSc string
-linesTotalSec=selectionAct(linesTotalSec,actors)
-[print(item.tex+" "+str(item.timing)) for item in linesTotalSec]
-
-
-#fills actors lis with text lines
-actors=actorsListFill(actors,linesTotalSec)
-
-
+writeToText(linesTotalSec,"interF.txt")
+#writes intermediate file for scene number and mood,item editing
+#reads interm file and writes to list 
+linesTotalSec=textToTotalLines(linesTotalSec,"interF.txt")
 writeToJsonL('output.jsonl',linesTotalSec)
-writeToCsvExt("output.csv",linesTotalSec)
 
 
-	
+#test for json 
+'''	
 data = []
 print("DTJSon")
 with open('output.jsonl') as f:
@@ -59,5 +44,5 @@ with open('output.jsonl') as f:
 print(data[5].tex)
 print(data[1].idSc)
 print(data[5].tT)
-
+'''
 		
