@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 import time
-from  bs4 import BeautifulSoup
+#from  bs4 import BeautifulSoup
 import re
 import csv
 import json
@@ -14,11 +15,14 @@ class Line():
 		self.name=name
 		self.tex=tex
 		self.act=act
-		self.idSc=[5,0,5,0,0]
+		self.idSc=[]
 		self.lineNum=lineNum
 		self.timing=timing
 		self.tT=tT
 		self.soundFile=""
+
+
+
 
 
 
@@ -34,8 +38,15 @@ def objCreator(d):
 	line.soundFile=d["soundFile"]
 	line.idSc=d['idSc']
 	return line
-		
 
+#generates list of actors id from globla list linesTotalSec
+def generateListActId(_linesTotalSec):
+    listOfId=[]
+    for item in _linesTotalSec:
+        if item.charId not in listOfId:
+            listOfId.append(item.charId)
+    listOfId.sort()
+    return listOfId
 
 
 def readFileListOfLines (fileName,_linesTotalSec):
@@ -49,7 +60,7 @@ def readFileListOfLines (fileName,_linesTotalSec):
 	
 	_TPrev=2
 	_tT=0
-	textFile=open(fileName)
+	textFile=open(fileName, encoding="utf8")
 	text1=textFile.read()
 	soup1 = BeautifulSoup(text1,"html.parser")
 	
@@ -105,46 +116,60 @@ def readFileListOfLines (fileName,_linesTotalSec):
 	return _linesTotalSec,actors
 	
 
-#TODO list of items somehow
-
-def writeToText(_linesTotalSec,fileN):
-	#TODO condensed text of dialog an physical action after each
-	#line. returns filepath
 	
-	interFile=open(fileN,'w')
-	for element in _linesTotalSec:
-		lineText=str(element.lineNum)+"\n"+str(element.charId)+" "+element.name+ " " + element.tex+"\n"
-		lineDesc="DIST=5"+","+"ITEM=0"+","+"MOOD=5"+","+"TALK=0"+","+"SCEN=0"
-		interFile.write(lineDesc+"\n"+lineText)
-	interFile.close()
-	
-def textToTotalLines(_linesTotalSec,fileN):
-	#TODO  get the filename from previous def 
-	#and fills lineTotalSec with phy actions numbers
-	fileR=open(fileN)
+		
+			
+					
+def selectionAct(_linesTotalSec,_actors):
+		#input for actions into idSc string
+		#that makes a list of descriptions for the dialog
+		# may need to implement some conditions and submenues
+		#currently is:id of listener,id of item speaker has,
+		#movement loop id,distance to the listener
+	r=""
 	index=0
-	for line in fileR:
-		if line.startswith("DIST="):
-			values=line.strip().split(",")
-			for number,item in enumerate(values):
-				_linesTotalSec[index].idSc[number]=int(item[-1])
-			index=index+1			
+	while r !="q" and  (index+1)<len(_linesTotalSec):
+		print(_linesTotalSec[index].tex)
+		print(_linesTotalSec[index].idSc)
+		print("who is listening 0-9")
+		#lists all actors for selection menu
+		for ind,ac in enumerate(_actors):
+			print(ac.name+"->"+str(ac.charId)+"\n")
+		actTo=input()
+		print("item the actor has 0-9")
+		print("to be implemented in text")
+		item=input()
+		print("move typeof the actor 0-9")
+		print( "from idle to agressive")
+		movType=input()
+		#distance between actors
+		print("distance between actor 0-9")
+		distType=input()
+	
+		#this is when you start typing
+		_linesTotalSec[index].idSc.clear()
+		_linesTotalSec[index].idSc.append(int(actTo))
+		_linesTotalSec[index].idSc.append(int(item))
+		_linesTotalSec[index].idSc.append(int(movType))
+		_linesTotalSec[index].idSc.append(int(distType))
+		print(_linesTotalSec[index].tex)
+		print(_linesTotalSec[index].idSc)
+		print ("proceed? or repeat ->r" )
+		r=input()
+		if r=="r":
+			index=index
+		elif r!="r":
+			index=index+1
+	for id in _linesTotalSec:
+		print (id.idSc)
 	return _linesTotalSec
-				
-				
+
+
+
 
 def timingLine( _linesTotalSec,_tT ):
 	r=""
 	index=0
-	totalTime=0
-	#filling list with default timing values
-	for timeFill in _linesTotalSec:
-		#assuming 25 letters per second plus 1 sec pause
-		timePerLine=len(timeFill.tex)/25+1
-		totalTime=totalTime+timePerLine
-		timeFill.timing=timePerLine
-		timeFill.tT=totalTime
-		
 	while r !="q" and  (index+1)<len(_linesTotalSec):
 		begin = time.time()
 		print ("proceed?")
@@ -211,54 +236,6 @@ def writeToCsvExt(fileCsvExt,_linesTotalSec):
 	with open("output.csv","r") as file_obj:	
 		reader = csv.reader(file_obj, delimiter=',')
 		myScriptList=list(reader)
-
-
-#replaced with writing to file and editing text		
-def selectionAct(_linesTotalSec,_actors):
-		#input for actions into idSc string
-		#that makes a list of descriptions for the dialog
-		# may need to implement some conditions and submenues
-		#currently is:id of listener,id of item speaker has,
-		#movement loop id,distance to the listener
-	r=""
-	index=0
-	while r !="q" and  (index+1)<len(_linesTotalSec):
-		print(_linesTotalSec[index].tex)
-		print(_linesTotalSec[index].idSc)
-		print("who is listening 0-9")
-		#lists all actors for selection menu
-		for ind,ac in enumerate(_actors):
-			print(ac.name+"->"+str(ac.charId)+"\n")
-		actTo=input()
-		print("item the actor has 0-9")
-		print("to be implemented in text")
-		item=input()
-		print("move typeof the actor 0-9")
-		print( "from idle to agressive")
-		movType=input()
-		#distance between actors
-		print("distance between actor 0-9")
-		distType=input()
-	
-		#this is when you start typing
-		_linesTotalSec[index].idSc.clear()
-		_linesTotalSec[index].idSc.append(int(actTo))
-		_linesTotalSec[index].idSc.append(int(item))
-		_linesTotalSec[index].idSc.append(int(movType))
-		_linesTotalSec[index].idSc.append(int(distType))
-		print(_linesTotalSec[index].tex)
-		print(_linesTotalSec[index].idSc)
-		print ("proceed? or repeat ->r" )
-		r=input()
-		if r=="r":
-			index=index
-		elif r!="r":
-			index=index+1
-	for id in _linesTotalSec:
-		print (id.idSc)
-	return _linesTotalSec
-
-
 		
 if __name__ == "__main__":
     print ("executed as main")
