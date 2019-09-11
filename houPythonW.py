@@ -4,8 +4,8 @@ from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,ac
 from support import generateListActId
 
 import hou
-geoRut=hou.node('/obj/geo1')
-fbxPath="D:/HoudiniProj/HoudiniProjects/JsonProject/obj_fbx_tube.fbx"
+
+
 def fbxMerge(_fbxPath):
     fbx=hou.hipFile.importFBX(_fbxPath)
     fbx[0].parm("scale").set(0.01)
@@ -47,12 +47,13 @@ def generate(_actId,_objMergeNode,_data,_newChopObj):
                     _objMergeNode.setNextInput(newcopiesS)
     return _objMergeNode               
                     
-
+fbxPath="D:/HoudiniProj/HoudiniProjects/JsonProject/obj_fbx_tube.fbx"
 node = hou.pwd()
 geo = node.geometry()
 workDir=os.getcwd()
 data = []
 print("DTJSon")
+#reads json data using function from support into data list
 with open("outputSdPath.jsonl") as f:
         for line in f:
                 obj=(json.loads(line,object_hook=objCreator))
@@ -61,24 +62,27 @@ with open("outputSdPath.jsonl") as f:
                 data.append(obj)
                 
 path="D:/downloads/pythonHTMLparser/skazka/sound/"
-net1=hou.node('/obj/geo1/chopnet1')
-
+#generates list of actors id
 idList=generateListActId(data)
-geoRut=hou.node('/obj/geo1')
-newChopObj=geoRut.createNode("chopnet")
 
+geoRut=hou.node('/obj/geo1')
+
+newChopObj=geoRut.createNode("chopnet")
 globMerge=newChopObj.createNode("merge")
 
+# imports fbx per actors id
 fbxActList=[]
 for idAct in idList:
-    
+# create object merge per imported fbx
+#generate list of object merges
     fbNode=fbxMerge(fbxPath)
     fbxActList.append(fbNode)
     
 for idAct in idList:
     idActList=[]
     fbxActList=[]
-    
+#create merge node an connect to it file with sound
+#then rename channel and shifts it to time  per each    actId
     objMergeNode=newChopObj.createNode("merge")
     for dataId in data:
         if dataId.charId==idAct:
