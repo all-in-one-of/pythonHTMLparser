@@ -93,3 +93,42 @@ for idAct in idList:
                 
 hou.node('/obj/geo1/chopnet2').layoutChildren()
 hou.node('/obj/geo1').layoutChildren()
+#result list of obj merge nodes in geo 
+# create cameras and scenes layout. scenes to be edited in interF? file
+# distance between objects,orient
+# distance doesent change within scenes
+'''
+myCam = hou.node(“/obj”).createNode(“cam”, “myCam”)
+hou.hscript(“viewcamera -c ” + myCam.name() + “ *.*.world.persp1”)
+
+script to iterate over different cameras
+
+import hou, toolutils
+ 
+cameraPathes = []
+for n in hou.node('/').allSubChildren():
+    if n.type().name().startswith("cam"):
+        cameraPathes.append(n.path())
+ 
+desktop = hou.ui.curDesktop()
+scene_viewer = desktop.paneTabOfType(hou.paneTabType.SceneViewer)
+viewport = scene_viewer.curViewport()
+ 
+if viewport.camera()>0:
+    index = cameraPathes.index( viewport.camera().path() )
+    maximum = len(cameraPathes)
+    index2 = (index+1)%maximum
+    viewport.setCamera(hou.node(cameraPathes[index2]))
+ 
+else:
+    viewport.setCamera(hou.node(cameraPathes[0]))
+    
+    
+anothe tut set up cam res
+
+objNode = hou.node('/obj')
+camNode = objNode.createNode('cam', ‘cameraName’)
+
+camNode.parm(‘resx’).set(1920)
+camNode.parm(‘resy’).set(1080)
+'''
