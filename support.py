@@ -1,3 +1,8 @@
+import time
+from  bs4 import BeautifulSoup
+import re
+import csv
+import json
 class Line():
 	'''gets line with characterId as int text itself as string ,physical action as list of integers,scene number,line number'''
 	def __init__(self,charId,name,tex,act,lineNum,timing,tT):
