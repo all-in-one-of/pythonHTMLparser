@@ -10,39 +10,66 @@ from bs4 import BeautifulSoup
 import csv
 from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL,writeToText,textToTotalLines
 
+#reads jsonl file into a list of objects
+def readFromJsonL(filename,data ):	
+	print("DTJSon")
+	with open(filename) as f:
+		for line in f:
+			obj=(json.loads(line,object_hook=objCreator))
+			
+			data.append(obj)
+	
+	return data	
+
 #reads formatted html page separate names, description is underlined
 #text color is read into list
 linesTotalSec=[]
 linesTotalSec,actors=readFileListOfLines("index.html",linesTotalSec)
 
+
+
+
+
 #prints resulted list
 for lineSec in linesTotalSec:
 	print(lineSec.tex+"lineActor"+ actors[lineSec.charId].name)
 
-# set the timing for each line from number of char
-tT=0
-linesTotalSec=timingLine(linesTotalSec,tT)
 
-
-writeToText(linesTotalSec,"interF.txt")
+print("read the existing output.jsonl(1) or generate new(2)")
+deside=input()
+if deside==str(2):
+	tT=0
+	# set the timing for each line from number of char
+	linesTotalSec=timingLine(linesTotalSec,tT)
+	writeToJsonL('output.jsonl',linesTotalSec)
+else:
+	linesTotalSec=[]
+	readFromJsonL("output.jsonl",linesTotalSec)
+	
+	print("Merge with interF(press1) or Generate new interF(press2) file")
+	deside=input( )
+	if deside==str(2):
+		writeToText(linesTotalSec,"interF.txt")
 #writes intermediate file for scene number and mood,item editing
 #reads interm file and writes to list 
-linesTotalSec=textToTotalLines(linesTotalSec,"interF.txt")
-writeToJsonL('output.jsonl',linesTotalSec)
-
-
-#test for json 
-'''	
-data = []
-print("DTJSon")
-with open('output.jsonl') as f:
-	for line in f:
-		obj=(json.loads(line,object_hook=objCreator))
-		print("DTJSon")
-		print(obj)
-		data.append(obj)
-print(data[5].tex)
-print(data[1].idSc)
-print(data[5].tT)
-'''
+	else:
+		linesTotalSec=textToTotalLines(linesTotalSec,"interF.txt")
+		writeToJsonL('output.jsonl',linesTotalSec)
+		print("merged output&interF")
 		
+
+
+
+
+
+#small check if recorded jsonl and current list have equal numbers
+testTotalSec=[]
+readFromJsonL("output.jsonl",testTotalSec)
+for i in testTotalSec:
+	print (i)
+for index,el in enumerate(linesTotalSec):
+	if (el.tT==testTotalSec[index].tT):
+		print("True")
+	else:
+		print("False")
+
