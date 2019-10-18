@@ -1,17 +1,11 @@
-﻿#TODO - write a readme so to understand pipeline
-#TODO - write a module to merge interF.txt int JsonLine file
 import json
-import random
 import os
-import sys
-#adds path to locate modules
-sys.path.append("D:/downloads/pythonHTMLparser")
 from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
 from support import generateListActId
 
 import hou
 geoRut=hou.node('/obj/geo1')
-fbxPath="D:/downloads/pythonHTMLparser/pig.fbx"
+fbxPath="D:/HoudiniProj/HoudiniProjects/JsonProject/obj_fbx_tube.fbx"
 def fbxMerge(_fbxPath):
     fbx=hou.hipFile.importFBX(_fbxPath)
     fbx[0].parm("scale").set(0.01)
@@ -28,7 +22,7 @@ def fbxMerge(_fbxPath):
     objMergeNodeFBX=geoRut.createNode("object_merge") 
     objMergeNodeFBX.parm("objpath1").set(pathObj)
     objMergeNodeFBX.parm("xformtype").set(1)
-    return objMergeNodeFBX,listFbx[0]
+    return objMergeNodeFBX
 
 def generate(_actId,_objMergeNode,_data,_newChopObj):
 
@@ -59,7 +53,7 @@ geo = node.geometry()
 workDir=os.getcwd()
 data = []
 print("DTJSon")
-with open("D:/downloads/pythonHTMLparser/outputSdPath.jsonl") as f:
+with open("outputSdPath.jsonl") as f:
         for line in f:
                 obj=(json.loads(line,object_hook=objCreator))
                 print("DTJSon")
@@ -78,13 +72,7 @@ globMerge=newChopObj.createNode("merge")
 fbxActList=[]
 for idAct in idList:
     
-    fbNode,objFbx=fbxMerge(fbxPath)
-    trX=random.randint(1,5)
-    objFbx.parmTuple('t').set([0,trX,0])
-#test for creating and positioning cameras
-    myCam = hou.node("/obj").createNode("cam","myCam")
-    camTx=random.randint(1,1111)
-    myCam.parmTuple('t').set([0,camTx,(camTx*0.3)])
+    fbNode=fbxMerge(fbxPath)
     fbxActList.append(fbNode)
     
 for idAct in idList:
@@ -99,5 +87,5 @@ for idAct in idList:
     globMerge.setNextInput(connMerge)
             
                 
-hou.node('/obj/geo1/chopnet1').layoutChildren()
+hou.node('/obj/geo1/chopnet2').layoutChildren()
 hou.node('/obj/geo1').layoutChildren()
