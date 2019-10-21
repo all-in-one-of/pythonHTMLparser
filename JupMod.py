@@ -42,6 +42,19 @@ if deside==str(2):
 	# set the timing for each line from number of char
 	linesTotalSec=timingLine(linesTotalSec,tT)
 	writeToJsonL('output.jsonl',linesTotalSec)
+	
+	print("Merge with interF(press1) or Generate new interF(press2) file")
+	deside=input( )
+	if deside==str(2):
+		writeToText(linesTotalSec,"interF.txt")
+#writes intermediate file for scene number and mood,item editing
+#reads interm file and writes to list 
+	else:
+		linesTotalSec=[]
+		readFromJsonL("output.jsonl",linesTotalSec)
+		textToTotalLines(linesTotalSec,"interF.txt")
+		writeToJsonL('output.jsonl',linesTotalSec)
+		print("merged output&interF")
 else:
 	linesTotalSec=[]
 	readFromJsonL("output.jsonl",linesTotalSec)
@@ -57,7 +70,11 @@ else:
 		writeToJsonL('output.jsonl',linesTotalSec)
 		print("merged output&interF")
 		
-
+#TODO
+# proc generates offsets in x axis corresponding to sceneId
+# generates  characters in the scene(fbx, position with offset)
+# generates cameras ( with offsets )
+# ??? generate all in 0 0 0, then apply offsets
 
 
 

@@ -173,7 +173,7 @@ def actorsListFill(_actors,_linesTotalSec):
 # convert list of objects to dictionary
 #and writes to JsonL file
 def writeToJsonL(filename,listOfObj):
-	with open(filename, 'w') as outfile:
+	with open(filename, 'w',encoding='utf8') as outfile:
 		for i in range(0,len(listOfObj)):
 			Ld={}
 			item=listOfObj[i]
@@ -186,7 +186,7 @@ def writeToJsonL(filename,listOfObj):
 			Ld["timing"]=item.timing
 			Ld["tT"]=item.tT
 			Ld["soundFile"]=item.soundFile
-			json.dump(Ld, outfile)
+			json.dump(Ld, outfile,ensure_ascii=False)
 			outfile.write('\n')
 
 def writeToCsvExt(fileCsvExt,_linesTotalSec):
