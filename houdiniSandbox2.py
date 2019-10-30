@@ -1,95 +1,14 @@
-#TODO - write a readme so to understand pipeline
-#TODO - write a module to merge interF.txt int JsonLine file
+import hou
 import json
 import random
 import os
 import sys
 #adds path to locate modules
-supPath="D:/downloads/pythonHTMLparser"
+supPath="C:/test/pythonHTMLparser"
 sys.path.append(supPath)
 from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
 from support import generateListActId
-import hou
-geoRut=hou.node('/obj/geo1')
 
-#from support import #generateDictOfSceneAct,generateCamActPosition
-fbxPath=["D:/downloads/pythonHTMLparser/pig.fbx",
-"D:/downloads/pythonHTMLparser/box.fbx",
-"D:/downloads/pythonHTMLparser/tom.fbx",
-"D:/downloads/pythonHTMLparser/toy.fbx",
-"D:/downloads/pythonHTMLparser/box.fbx",
-"D:/downloads/pythonHTMLparser/pig.fbx",
-"D:/downloads/pythonHTMLparser/toy.fbx",
-"D:/downloads/pythonHTMLparser/box.fbx"]
-data = []
-
-with open(supPath+"output.jsonl") as f:
-        for line in f:
-                obj=(json.loads(line,object_hook=objCreator))
-                print("DTJSon")
-                print(obj)
-                data.append(obj)
-                
-
-idList=generateListActId(data)
-
-
-
-def fbxMerge(_fbxPath):
-    fbx=hou.hipFile.importFBX(_fbxPath)
-    fbx[0].parm("scale").set(0.01)
-    
-    listFbx=fbx[0].children()
-    for node in listFbx:
-    
-        print node.name()
-        print fbx[0].name()
-        
-        pathObj="/obj/"+fbx[0].name()+"/"+listFbx[0].name()
-        listFbx[0].parmTuple("t").set([0,2,0])
-        
-    objMergeNodeFBX=geoRut.createNode("object_merge") 
-    objMergeNodeFBX.parm("objpath1").set(pathObj)
-    objMergeNodeFBX.parm("xformtype").set(1)
-    return objMergeNodeFBX,listFbx[0]
-
-#reads jsonl file into a list of objects
-def readFromJsonL(filename,data ):      
-        print("DTJSon")
-        with open(filename) as f:
-                for line in f:
-                        obj=(json.loads(line,object_hook=objCreator))
-                        
-                        data.append(obj)
-        
-        return data     
-        
-        
-
-def readFileGenerateSceneInteger(filename,_testTotalSec=[]):
-        """
-iterate through the list and generates integer with
-numbers from left to right SceneNumber, charId involved
-Keeps them in _testTotalSec list and writes to a file as well
-        """
-        readFromJsonL(filename,_testTotalSec)
-        totalSecCopy=_testTotalSec.copy()
-        listOfScens=[]
-        addStr=""
-        for index,line in enumerate(_testTotalSec):
-                addStr=""
-                scNum=line.idSc[4]
-                addStr=str(scNum)
-                for ind,li in enumerate(totalSecCopy):
-                        if li.idSc[4]==scNum:
-                                addStr=addStr+str(li.charId)
-                _testTotalSec[index].idSc[0]=addStr
-        writeToJsonL(filename,_testTotalSec)
-        return _testTotalSec
-        
-#todo linesTotalSec now contains information about scene and char in it
-#it's in linesTotalSec[index].idSc[0] .First is the scene number and then in #the order of appearing char id.   
-#need to iterate over list ,shift the camera and generate fbx import for #scenes
 def generateDictOfSceneAct(filename,_linesTotalSec=[]):
         """
         creates dictonary with keys SceneNumbers
@@ -111,7 +30,48 @@ def generateDictOfSceneAct(filename,_linesTotalSec=[]):
                         currScene+=1
                         print(listOfActors)
         return dictOfActors
+
+def delSearch(patt):    
+    results = []
+    for n in hou.node('/obj/').children():
+        if n.name().startswith(patt):
+            print (n.path())
+            results.append(n.path())
+     
+    print (len(results))            
+    if len(results):
+        for node_name in results:
+            hou.node(node_name).destroy()
+            
+#reads jsonl file into a list of objects
+def readFromJsonL(filename,data ):      
+        print("DTJSon")
+        with open(filename) as f:
+                for line in f:
+                        obj=(json.loads(line,object_hook=objCreator))
+                        
+                        data.append(obj)
         
+        return data     
+def fbxMerge(_fbxPath):
+    fbx=hou.hipFile.importFBX(_fbxPath)
+    fbx[0].parm("scale").set(0.01)
+    
+    listFbx=fbx[0].children()
+    for node in listFbx:
+    
+        print node.name()
+        print fbx[0].name()
+        
+        pathObj="/obj/"+fbx[0].name()+"/"+listFbx[0].name()
+        listFbx[0].parmTuple("t").set([0,2,0])
+        
+    objMergeNodeFBX=geoRut.createNode("object_merge") 
+    objMergeNodeFBX.parm("objpath1").set(pathObj)
+    objMergeNodeFBX.parm("xformtype").set(1)
+    return objMergeNodeFBX,listFbx[0]
+
+    
 def generateCamActPosition(_dictOfActors,offCamX=10,offActZ=2,offActX=1):       
         '''
         from dictonary with keys SceneNumbers
@@ -143,10 +103,35 @@ def generateCamActPosition(_dictOfActors,offCamX=10,offActZ=2,offActX=1):
                 dictOfActPos[value[0]]=listPerScene
                 
         return listOfCamTulps,dictOfActPos
+
         
+'''           
+delSearch("materials")
+n=hou.selectedNodes()
+print(n)
+k=n[0].extractAndDelete()
+print(k)
+'''
+geoRut=hou.node('/obj/geo1')
+fbxPath=['C:/test/pythonHTMLparser/tom.fbx','C:/test/pythonHTMLparser/box.fbx',
+'C:/test/pythonHTMLparser/pig.fbx','C:/test/pythonHTMLparser/toy.fbx',
+'C:/test/pythonHTMLparser/tom.fbx','C:/test/pythonHTMLparser/box.fbx',
+'C:/test/pythonHTMLparser/pig.fbx','C:/test/pythonHTMLparser/box.fbx']
+data = []
 
+with open(supPath+"\output.jsonl") as f:
+        for line in f:
+                obj=(json.loads(line,object_hook=objCreator))
+                print("DTJSon")
+                print(obj)
+                data.append(obj)
+                
 
-testDict=generateDictOfSceneAct('output.jsonl')
+idList=generateListActId(data)
+
+print(idList)
+
+testDict=generateDictOfSceneAct(supPath+"\output.jsonl")
 testCamTul,testDict=generateCamActPosition(testDict)
 
 print('testCamTul')
@@ -169,12 +154,4 @@ for key,value in testDict.items():
     print(actTuple)
     fbNode,objFbx=fbxMerge(fbxPath[value[0][0]])
     objFbx.parmTuple('t').set(actTuple)
-    
-    
-'''    
-for index,idAct in enumerate(idList):
-    
-    fbNode,objFbx=fbxMerge(fbxPath[index])
-    trX=random.randint(1,5)
-    objFbx.parmTuple('t').set([0,trX,0])   
-'''
+
