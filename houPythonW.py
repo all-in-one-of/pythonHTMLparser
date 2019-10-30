@@ -35,7 +35,10 @@ def generate(_actId,_objMergeNode,_data,_newChopObj):
     for index,item in enumerate(_data):
                     sound=item.soundFile.rsplit("/",1)[1]
                     
-                    newcopiesF=_newChopObj.createNode("file")
+     def generate(_actId,_objMergeNode,_data,_newChopObj):
+
+    for index,item in enumerate(_data):
+                  newcopiesF=_newChopObj.createNode("file")
                     newcopiesF.setName(sound)
                     newcopiesF.parm("file").set(path+sound)
                     
