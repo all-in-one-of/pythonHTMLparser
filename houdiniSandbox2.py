@@ -56,23 +56,19 @@ def readFromJsonL(filename,data ):
 def fbxMerge(_fbxPath):
     fbx=hou.hipFile.importFBX(_fbxPath)
     fbx[0].parm("scale").set(0.01)
-    
-    listFbx=fbx[0].children()
+    #removes subnet object
+    listFbx=fbx[0].extractAndDelete()
     for node in listFbx:
     
         print node.name()
-        print fbx[0].name()
-        
-        pathObj="/obj/"+fbx[0].name()+"/"+listFbx[0].name()
-        listFbx[0].parmTuple("t").set([0,2,0])
+        pathObj="/obj/"+listFbx[0].name()
         
     objMergeNodeFBX=geoRut.createNode("object_merge") 
     objMergeNodeFBX.parm("objpath1").set(pathObj)
     objMergeNodeFBX.parm("xformtype").set(1)
     return objMergeNodeFBX,listFbx[0]
-
     
-def generateCamActPosition(_dictOfActors,offCamX=10,offActZ=2,offActX=1):       
+def generateCamActPosition(_dictOfActors,offCamX=10,offActZ=-20,offActX=1):       
         '''
         from dictonary with keys SceneNumbers
         and values list of actors (list(set) with unic charId, list[0] is Scene num
@@ -144,14 +140,16 @@ for camP in testCamTul:
     myCam.parmTuple('t').set(camP)
     
 for key,value in testDict.items():
-    print("act in Scene")
+    #print("act in Scene")
     #for ActT in value[0][1:])
-    l=value[0][1:]
-    actTuple=tuple(l)
-    print("Actor id")
-    print(value[0][0])
-    print("actorPos")
-    print(actTuple)
-    fbNode,objFbx=fbxMerge(fbxPath[value[0][0]])
-    objFbx.parmTuple('t').set(actTuple)
+    for actor in value:
+        print("Actor id")
+        print(actor[0])
+        fbNode,objFbx=fbxMerge(fbxPath[actor[0]])
+        #objFbx.extractAndDelete()
+        l=actor[1:]
+        actTuple=tuple(l)
+        objFbx.parmTuple('t').set(actTuple)
+        print("actorPos")
+        print(actTuple)
 
