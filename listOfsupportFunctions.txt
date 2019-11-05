@@ -1,0 +1,58 @@
+class Line():
+	'''gets line with characterId as int text itself as string ,physical action as list of integers,scene number,line number'''
+	def __init__(self,charId,name,tex,act,lineNum,timing,tT)
+	
+
+def objCreator(d):
+	line=Line(d["charId"],d["name"],d["tex"],d["act"],d["lineNum"],d["timing"],d["tT"])
+	
+def readFileListOfLines (fileName,_linesTotalSec):
+	#temp values to fill the class variables
+	#reads html file. the underlined strings are descriptions of the story
+	#the italic strings are the dialogs
+	#reads the color value of the string and creates an RGB tuple
+	# red text defines an actors list
+	# if text is italic list of actors is compared to prev span beginning and
+	#adds an actor id. all this is forming list of objects.  _linesTotalSec
+	
+def writeToText(_linesTotalSec,fileN):
+	#TODO condensed text of dialog an physical action after each
+	#line. returns filepath
+
+def textToTotalLines(_linesTotalSec,fileN):
+	#TODO  get the filename from previous def 
+	#and fills lineTotalSec with phy actions numbers
+
+
+def timingLine( _linesTotalSec,_tT ):
+
+
+def actorsListFill(_actors,_linesTotalSec):
+
+def writeToJsonL(filename,listOfObj):
+
+def readFromJsonL(filename,data ):
+
+
+def readFileGenerateSceneInteger(filename,_testTotalSec=[]):
+	"""
+iterate through the list and generates integer with
+numbers from left to right SceneNumber, charId involved
+Keeps them in _testTotalSec list and writes to a file as well
+	"""
+
+def generateDictOfSceneAct(filename,_linesTotalSec=[]):
+        """
+        creates dictonary with keys SceneNumbers
+        and values list of actors (list(set) with unic charId, list[0] is Scene number)
+        """
+        
+def generateCamActPosition(_dictOfActors,offCamX=10,offActZ=-20,offActX=1):       
+        '''
+        from dictonary with keys SceneNumbers
+        and values list of actors (list(set) with unic charId, list[0] is Scene num
+        creates list of camera position tulps per scene.
+        creates dictionary with value as sceneNum and key s list of 
+        tupls with [1:] containing character positions and [0] charId
+        
+        '''
