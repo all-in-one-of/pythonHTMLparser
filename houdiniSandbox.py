@@ -7,8 +7,7 @@ import sys
 #adds path to locate modules
 supPath="D:/downloads/pythonHTMLparser"
 sys.path.append(supPath)
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
-from support import generateListActId
+from supportNew import timingLine,readFileListOfLines,actorsListFill,objCreator,writeToJsonL,generateDictOfSceneAct,generateCamActPosition,genListActId
 import hou
 geoRut=hou.node('/obj/geo1')
 

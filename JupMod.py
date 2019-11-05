@@ -8,7 +8,8 @@ import os
 import bs4
 from bs4 import BeautifulSoup
 import csv
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL,writeToText,textToTotalLines
+
+from supportNew import timingLine,readFileListOfLines,actorsListFill,objCreator,writeToJsonL,generateDictOfSceneAct,generateCamActPosition,genListActId
 
 #reads jsonl file into a list of objects
 def readFromJsonL(filename,data ):	

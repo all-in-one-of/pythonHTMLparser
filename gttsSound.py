@@ -1,7 +1,7 @@
 from gtts import gTTS
 import os
 import json
-from support import selectionAct,timingLine,readFileListOfLines,writeToCsvExt,actorsListFill,objCreator,writeToJsonL
+from supportNew import timingLine,readFileListOfLines,actorsListFill,objCreator,writeToJsonL
 
 #generates sound files in /sound directory in current working dir
 #reqiers good internet connection
