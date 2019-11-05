@@ -189,71 +189,6 @@ def writeToJsonL(filename,listOfObj):
 			json.dump(Ld, outfile,ensure_ascii=False)
 			outfile.write('\n')
 
-def writeToCsvExt(fileCsvExt,_linesTotalSec):
-	with open(fileCsvExt,'w') as outputFile:
-		wr=csv.writer(outputFile,dialect='excel')
-		for lin in _linesTotalSec:
-			oneLine=[]
-			oneLine.append(lin.charId)
-			oneLine.append(lin.name)
-			oneLine.append(lin.tex)
-			oneLine.append(lin.act)
-			oneLine.append(lin.idSc)
-			oneLine.append(lin.lineNum)
-			oneLine.append(lin.timing)
-			oneLine.append(lin.tT)
-			print(oneLine)
-			wr.writerow(oneLine)
-	with open("output.csv","r") as file_obj:	
-		reader = csv.reader(file_obj, delimiter=',')
-		myScriptList=list(reader)
-
-
-#replaced with writing to file and editing text		
-def selectionAct(_linesTotalSec,_actors):
-		#input for actions into idSc string
-		#that makes a list of descriptions for the dialog
-		# may need to implement some conditions and submenues
-		#currently is:id of listener,id of item speaker has,
-		#movement loop id,distance to the listener
-	r=""
-	index=0
-	while r !="q" and  (index+1)<len(_linesTotalSec):
-		print(_linesTotalSec[index].tex)
-		print(_linesTotalSec[index].idSc)
-		print("who is listening 0-9")
-		#lists all actors for selection menu
-		for ind,ac in enumerate(_actors):
-			print(ac.name+"->"+str(ac.charId)+"\n")
-		actTo=input()
-		print("item the actor has 0-9")
-		print("to be implemented in text")
-		item=input()
-		print("move typeof the actor 0-9")
-		print( "from idle to agressive")
-		movType=input()
-		#distance between actors
-		print("distance between actor 0-9")
-		distType=input()
-
-		#this is when you start typing
-		_linesTotalSec[index].idSc.clear()
-		_linesTotalSec[index].idSc.append(int(actTo))
-		_linesTotalSec[index].idSc.append(int(item))
-		_linesTotalSec[index].idSc.append(int(movType))
-		_linesTotalSec[index].idSc.append(int(distType))
-		print(_linesTotalSec[index].tex)
-		print(_linesTotalSec[index].idSc)
-		print ("proceed? or repeat ->r" )
-		r=input()
-		if r=="r":
-			index=index
-		elif r!="r":
-			index=index+1
-	for id in _linesTotalSec:
-		print (id.idSc)
-	return _linesTotalSec
-	
 	
 #reads jsonl file into a list of objects
 def readFromJsonL(filename,data ):	
@@ -289,62 +224,60 @@ Keeps them in _testTotalSec list and writes to a file as well
 	writeToJsonL(filename,_testTotalSec)
 	return _testTotalSec
 	
-#todo linesTotalSec now contains information about scene and char in it
-#it's in linesTotalSec[index].idSc[0] .First is the scene number and then in #the order of appearing char id.	
-#need to iterate over list ,shift the camera and generate fbx import for #scenes
-def generateDictOfSceneAct(filename,_linesTotalSec=[]):
-	"""
-	creates dictonary with keys SceneNumbers
-	and values list of actors (list(set) with unic charId, list[0] is Scene number)
-	"""
-	readFromJsonL(filename,_linesTotalSec)
-	currScene=1
-	listOfActors=[]
-	dictOfActors={}
-	for index, line in enumerate(_linesTotalSec):
-		scNumstr=(line.idSc[0])
-		scNum=int(scNumstr[0])
-		if scNum==currScene:
-			
-			listOfActors=[int(ch) for ch in scNumstr]
-			listOfActors=list(set(listOfActors))
-			listOfActors.insert(0,currScene)
-			dictOfActors[currScene]=listOfActors
-			currScene+=1
-			print(listOfActors)
-	return dictOfActors
-	
-def generateCamActPosition(_dictOfActors,offCamX=10,offActZ=2,offActX=1):	
-	'''
-	from dictonary with keys SceneNumbers
-	and values list of actors (list(set) with unic charId, list[0] is Scene num
-	creates list of camera position tulps per scene.
-	creates dictionary with value as sceneNum and key s list of 
-	tupls with [1:] containing character positions and [0] charId
-	
-	'''
 
-	listOfCamTulps=[]
-	dictOfActPos={}
-	for key,value in _dictOfActors.items():
-		#Scene number * by offset will give a camera position in X
-		listOfCamTulps.append((value[0]*offCamX,0,0))
-		print(listOfCamTulps)
-	#iterate only portion of the list
-	#adding Z offset plus and minus delta(letssay 3 in X)
-		listPerScene=[]
-		for index,ac in enumerate(value[1:]):
-			
-			if index%2==0:
-				xOffset=value[0]*offCamX-offActX*(index-1)
-			else:
-				xOffset=value[0]*offCamX+offActX*(index-1)
-			listPerScene.append((ac,xOffset,0,offActZ))
-			
-			
-		dictOfActPos[value[0]]=listPerScene
-		
-	return listOfCamTulps,dictOfActPos
+def generateDictOfSceneAct(filename,_linesTotalSec=[]):
+        """
+        creates dictonary with keys SceneNumbers
+        and values list of actors (list(set) with unic charId, list[0] is Scene number)
+        """
+        readFromJsonL(filename,_linesTotalSec)
+        currScene=1
+        listOfActors=[]
+        dictOfActors={}
+        for index, line in enumerate(_linesTotalSec):
+                scNumstr=(line.idSc[0])
+                scNum=int(scNumstr[0])
+                if scNum==currScene:
+                        
+                        listOfActors=[int(ch) for ch in scNumstr]
+                        listOfActors=list(set(listOfActors))
+                        listOfActors.insert(0,currScene)
+                        dictOfActors[currScene]=listOfActors
+                        currScene+=1
+                        print(listOfActors)
+        return dictOfActors
+	
+def generateCamActPosition(_dictOfActors,offCamX=10,offActZ=-20,offActX=1):       
+        '''
+        from dictonary with keys SceneNumbers
+        and values list of actors (list(set) with unic charId, list[0] is Scene num
+        creates list of camera position tulps per scene.
+        creates dictionary with value as sceneNum and key s list of 
+        tupls with [1:] containing character positions and [0] charId
+        
+        '''
+
+        listOfCamTulps=[]
+        dictOfActPos={}
+        for key,value in _dictOfActors.items():
+                #Scene number * by offset will give a camera position in X
+                listOfCamTulps.append((value[0]*offCamX,0,0))
+                print(listOfCamTulps)
+        #iterate only portion of the list
+        #adding Z offset plus and minus delta(letssay 3 in X)
+                listPerScene=[]
+                for index,ac in enumerate(value[1:]):
+                        
+                        if index%2==0:
+                                xOffset=value[0]*offCamX-offActX*(index-1)
+                        else:
+                                xOffset=value[0]*offCamX+offActX*(index-1)
+                        listPerScene.append((ac,xOffset,0,offActZ))
+                        
+                        
+                dictOfActPos[value[0]]=listPerScene
+                
+        return listOfCamTulps,dictOfActPos
 
 if __name__ == "__main__":
     print ("executed as main")
